@@ -20,50 +20,10 @@ The Vigenère Cipher is a polyalphabetic substitution cipher that uses a keyword
 
 Encryption Formula
 
-C
-i
-	​
-
-=(P
-i
-	​
-
-+K
-i
-	​
-
-)mod26
-
+Ci=(Pi+Ki)mod26
 Decryption Formula
-
-P
-i
-	​
-
-=(C
-i
-	​
-
-−K
-i
-	​
-
-+26)mod26
-
+Pi=(Ci−Ki+26)mod26
 Where:
-
-P
-i
-	​
-
- = Plaintext letter
-C
-i
-	​
-
- = Ciphertext letter
-K
-i
-	​
-
- = Key letter
+Pi = Plaintext letter
+Ci = Ciphertext letter
+Ki = Key letter

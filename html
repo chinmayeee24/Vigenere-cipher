@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Vigenère Cipher</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #f4f6f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background: white;
+      padding: 30px;
+      width: 400px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+      color: #333;
+    }
+
+    textarea,
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 15px;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    button {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+      color: white;
+    }
+
+    .encrypt {
+      background: #28a745;
+    }
+
+    .decrypt {
+      background: #007bff;
+    }
+
+    .output {
+      margin-top: 20px;
+      background: #f1f1f1;
+      padding: 12px;
+      border-radius: 6px;
+      min-height: 50px;
+      word-wrap: break-word;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Vigenère Cipher</h2>
+
+    <textarea id="text" rows="4" placeholder="Enter text"></textarea>
+
+    <input type="text" id="key" placeholder="Enter key">
+
+    <div class="buttons">
+      <button class="encrypt" onclick="encryptText()">Encrypt</button>
+      <button class="decrypt" onclick="decryptText()">Decrypt</button>
+    </div>
+
+    <div class="output" id="output">
+      Result will appear here...
+    </div>
+  </div>
+
+  <script>
+    function formatKey(text, key) {
+      key = key.toUpperCase().replace(/[^A-Z]/g, '');
+      let formattedKey = '';
+      let j = 0;
+
+      for (let i = 0; i < text.length; i++) {
+        let char = text[i];
+
+        if (/[A-Za-z]/.test(char)) {
+          formattedKey += key[j % key.length];
+          j++;
+        } else {
+          formattedKey += char;
+        }
+      }
+
+      return formattedKey;
+    }
+
+    function vigenereEncrypt(text, key) {
+      text = text.toUpperCase();
+      key = formatKey(text, key);
+
+      let result = '';
+
+      for (let i = 0; i < text.length; i++) {
+        let char = text[i];
+
+        if (/[A-Z]/.test(char)) {
+          let textCode = char.charCodeAt(0) - 65;
+          let keyCode = key[i].charCodeAt(0) - 65;
+
+          let encryptedChar = String.fromCharCode(
+            ((textCode + keyCode) % 26) + 65
+          );
+
+          result += encryptedChar;
+        } else {
+          result += char;
+        }
+      }
+
+      return result;
+    }
+
+    function vigenereDecrypt(text, key) {
+      text = text.toUpperCase();
+      key = formatKey(text, key);
+
+      let result = '';
+
+      for (let i = 0; i < text.length; i++) {
+        let char = text[i];
+
+        if (/[A-Z]/.test(char)) {
+          let textCode = char.charCodeAt(0) - 65;
+          let keyCode = key[i].charCodeAt(0) - 65;
+
+          let decryptedChar = String.fromCharCode(
+            ((textCode - keyCode + 26) % 26) + 65
+          );
+
+          result += decryptedChar;
+        } else {
+          result += char;
+        }
+      }
+
+      return result;
+    }
+
+    function encryptText() {
+      const text = document.getElementById('text').value;
+      const key = document.getElementById('key').value;
+
+      if (!text || !key) {
+        alert("Please enter both text and key.");
+        return;
+      }
+
+      document.getElementById('output').innerText =
+        vigenereEncrypt(text, key);
+    }
+
+    function decryptText() {
+      const text = document.getElementById('text').value;
+      const key = document.getElementById('key').value;
+
+      if (!text || !key) {
+        alert("Please enter both text and key.");
+        return;
+      }
+
+      document.getElementById('output').innerText =
+        vigenereDecrypt(text, key);
+    }
+  </script>
+
+</body>
+</html>
